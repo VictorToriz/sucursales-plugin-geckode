@@ -1,0 +1,104 @@
+/**
+ * Estilos de administración para Sucursales en Google Maps (Reingeniería)
+ * Version: 2.0.0
+ */
+
+/* Estilos básicos para formularios */
+.location-box {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.location-row {
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.location-column {
+    flex: 1;
+    min-width: 200px;
+}
+
+.location-field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.location-field:focus {
+    border-color: #0073aa;
+    box-shadow: 0 0 5px rgba(0, 115, 170, 0.25);
+    outline: none;
+}
+
+.location-help {
+    margin-top: 10px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-left: 4px solid #0073aa;
+    color: #444;
+    font-size: 13px;
+}
+
+/* Tarjetas informativas */
+.card {
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card h2, .card h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    color: #23282d;
+}
+
+.card ul {
+    padding-left: 20px;
+}
+
+.card li {
+    margin-bottom: 5px;
+}
+
+/* Opciones de página de configuración */
+.form-table th {
+    width: 200px;
+}
+
+/* Mensajes de notificación */
+.sucursales-notice {
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+
+.sucursales-notice-success {
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+}
+
+.sucursales-notice-error {
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    color: #a94442;
+}
+
+/* Estilo para el código en instrucciones */
+code {
+    background: #f4f4f4;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 13px;
+    color: #333;
+    font-family: Consolas, Monaco, monospace;
+}
