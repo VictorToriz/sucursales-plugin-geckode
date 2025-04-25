@@ -1,6 +1,6 @@
 /**
  * Script para Sucursales en Google Maps (Reingeniería)
- * Version: 2.0.0
+ * Version: 2.0.3
  */
 
 // Variables globales
@@ -20,15 +20,21 @@ function initSucursalesMap() {
         return;
     }
     
-    // Obtener el elemento del mapa
+    // Guardar datos de sucursales para usar en el listado
+    sucursalesData = sucursalesMapData.markers;
+    
+    // Verificar si debemos mostrar el listado
+    if (sucursalesMapData.mostrarLista !== false) {
+        // Renderizar el listado de sucursales primero
+        createSucursalesLayout();
+    }
+    
+    // Obtener el elemento del mapa (ahora dentro del contenedor)
     var mapElement = document.getElementById(sucursalesMapData.mapId);
     if (!mapElement) {
         console.error('No se encontró el elemento del mapa con ID: ' + sucursalesMapData.mapId);
         return;
     }
-    
-    // Guardar datos de sucursales para usar en el listado
-    sucursalesData = sucursalesMapData.markers;
     
     // Crear el mapa
     sucursalesMap = new google.maps.Map(mapElement, {
@@ -88,15 +94,9 @@ function initSucursalesMap() {
         }
     }
     
-    // Verificar si debemos mostrar el listado
-    if (sucursalesMapData.mostrarLista !== false) {
-        // Renderizar el listado de sucursales
-        renderSucursalesList();
-        
-        // Crear filtro de estados si hay más de un estado
-        if (sucursalesMapData.estados && sucursalesMapData.estados.length > 1) {
-            createEstadosFilter(sucursalesMapData.estados);
-        }
+    // Crear filtro de estados si hay más de un estado
+    if (sucursalesMapData.estados && sucursalesMapData.estados.length > 1) {
+        createEstadosFilter(sucursalesMapData.estados);
     }
     
     // Evento cuando se cierra la ventana de información
@@ -118,6 +118,102 @@ function initSucursalesMap() {
             });
         }
     });
+}
+
+// Nueva función para crear el layout completo
+function createSucursalesLayout() {
+    // Obtener el contenedor original
+    var originalContainer = document.getElementById('sucursales-container-' + sucursalesMapData.mapId);
+    if (!originalContainer) {
+        console.error('No se encontró el contenedor de sucursales');
+        return;
+    }
+    
+    // Asegurarse de que el contenedor tenga la clase correcta para el layout
+    originalContainer.className = 'sucursales-container';
+    originalContainer.style.display = 'flex';
+    originalContainer.style.flexDirection = 'row';
+    originalContainer.style.gap = '20px';
+    
+    // Crear el contenedor del listado y agregarlo al contenedor principal
+    var listaContainer = document.createElement('div');
+    listaContainer.className = 'sucursales-lista';
+    listaContainer.style.flex = '0 0 30%'; // 30% del ancho
+    listaContainer.style.minWidth = '250px';
+    listaContainer.style.maxWidth = '350px';
+    
+    // Crear encabezado
+    var listaHeader = document.createElement('div');
+    listaHeader.className = 'sucursales-lista-header';
+    listaHeader.textContent = 'Nuestras Sucursales';
+    listaContainer.appendChild(listaHeader);
+    
+    // Contenedor para el filtro
+    var filtroContainer = document.createElement('div');
+    filtroContainer.className = 'sucursales-filtro';
+    filtroContainer.id = 'sucursales-filtro';
+    filtroContainer.style.display = 'none';
+    listaContainer.appendChild(filtroContainer);
+    
+    // Crear la lista de sucursales
+    var lista = document.createElement('ul');
+    lista.className = 'sucursales-items';
+    
+    // Añadir cada sucursal a la lista
+    for (var i = 0; i < sucursalesData.length; i++) {
+        var sucursal = sucursalesData[i];
+        
+        var item = document.createElement('li');
+        item.className = 'sucursal-item';
+        item.id = 'sucursal-item-' + sucursal.id;
+        item.setAttribute('data-id', sucursal.id);
+        item.setAttribute('data-estado', sucursal.estado || '');
+        
+        var html = '';
+        html += '<h4>' + sucursal.title + '</h4>';
+        
+        if (sucursal.address) {
+            html += '<p><i class="dashicons dashicons-location"></i> ' + sucursal.address + '</p>';
+        }
+        
+        if (sucursal.phone) {
+            html += '<p><i class="dashicons dashicons-phone"></i> ' + sucursal.phone + '</p>';
+        }
+        
+        if (sucursal.schedule) {
+            html += '<p><i class="dashicons dashicons-clock"></i> ' + sucursal.schedule + '</p>';
+        }
+        
+        // Botones de acción
+        html += '<div class="sucursal-item-acciones">';
+        html += '<a href="#" class="sucursal-boton sucursal-boton-ver" data-id="' + sucursal.id + '">Ver en mapa</a>';
+        html += '<a href="#" class="sucursal-boton sucursal-boton-direcciones" data-id="' + sucursal.id + '" data-lat="' + sucursal.lat + '" data-lng="' + sucursal.lng + '">Cómo llegar</a>';
+        html += '</div>';
+        
+        item.innerHTML = html;
+        lista.appendChild(item);
+    }
+    
+    listaContainer.appendChild(lista);
+    
+    // Crear contenedor para el mapa
+    var mapContainer = document.createElement('div');
+    mapContainer.id = sucursalesMapData.mapId;
+    mapContainer.className = 'sucursales-map';
+    mapContainer.style.flex = '1'; // Toma el espacio restante
+    mapContainer.style.minHeight = '500px';
+    
+    // Vaciar el contenedor original
+    while (originalContainer.firstChild) {
+        originalContainer.removeChild(originalContainer.firstChild);
+    }
+    
+    // Agregar los nuevos elementos al contenedor original en el orden correcto
+    originalContainer.appendChild(listaContainer);
+    originalContainer.appendChild(mapContainer);
+    
+    // Añadir eventos a los botones
+    agregarEventosBotones();
 }
 
 // Función para crear un marcador
@@ -213,75 +309,6 @@ function clearSucursalesMarkers() {
         sucursalesMarkers[i].setMap(null);
     }
     sucursalesMarkers = [];
-}
-
-// Función para renderizar el listado de sucursales
-function renderSucursalesList() {
-    var mapContainer = document.getElementById(sucursalesMapData.mapId).parentNode;
-    
-    // Crear el contenedor del listado
-    var listaContainer = document.createElement('div');
-    listaContainer.className = 'sucursales-lista';
-    
-    // Crear encabezado
-    var listaHeader = document.createElement('div');
-    listaHeader.className = 'sucursales-lista-header';
-    listaHeader.textContent = 'Nuestras Sucursales';
-    listaContainer.appendChild(listaHeader);
-    
-    // Contenedor para el filtro (se llenará después si hay estados)
-    var filtroContainer = document.createElement('div');
-    filtroContainer.className = 'sucursales-filtro';
-    filtroContainer.id = 'sucursales-filtro';
-    filtroContainer.style.display = 'none';
-    listaContainer.appendChild(filtroContainer);
-    
-    // Crear la lista de sucursales
-    var lista = document.createElement('ul');
-    lista.className = 'sucursales-items';
-    
-    // Añadir cada sucursal a la lista
-    for (var i = 0; i < sucursalesData.length; i++) {
-        var sucursal = sucursalesData[i];
-        
-        var item = document.createElement('li');
-        item.className = 'sucursal-item';
-        item.id = 'sucursal-item-' + sucursal.id;
-        item.setAttribute('data-id', sucursal.id);
-        item.setAttribute('data-estado', sucursal.estado || '');
-        
-        var html = '';
-        html += '<h4>' + sucursal.title + '</h4>';
-        
-        if (sucursal.address) {
-            html += '<p><i class="dashicons dashicons-location"></i> ' + sucursal.address + '</p>';
-        }
-        
-        if (sucursal.phone) {
-            html += '<p><i class="dashicons dashicons-phone"></i> ' + sucursal.phone + '</p>';
-        }
-        
-        if (sucursal.schedule) {
-            html += '<p><i class="dashicons dashicons-clock"></i> ' + sucursal.schedule + '</p>';
-        }
-        
-        // Botones de acción
-        html += '<div class="sucursal-item-acciones">';
-        html += '<a href="#" class="sucursal-boton sucursal-boton-ver" data-id="' + sucursal.id + '">Ver en mapa</a>';
-        html += '<a href="#" class="sucursal-boton sucursal-boton-direcciones" data-id="' + sucursal.id + '" data-lat="' + sucursal.lat + '" data-lng="' + sucursal.lng + '">Cómo llegar</a>';
-        html += '</div>';
-        
-        item.innerHTML = html;
-        lista.appendChild(item);
-    }
-    
-    listaContainer.appendChild(lista);
-    
-    // Insertar el listado antes del mapa
-    mapContainer.parentNode.insertBefore(listaContainer, mapContainer);
-    
-    // Añadir eventos a los botones
-    agregarEventosBotones();
 }
 
 // Función para agregar eventos a los botones

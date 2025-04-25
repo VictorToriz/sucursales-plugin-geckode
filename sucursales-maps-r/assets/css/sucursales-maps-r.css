@@ -1,14 +1,16 @@
 /**
  * Estilos para Sucursales en Google Maps (Reingeniería)
- * Version: 2.0.0
+ * Version: 2.0.3
  */
 
 /* Contenedor principal */
 .sucursales-container {
     margin-bottom: 30px;
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
+    width: 100%;
 }
 
 /* Mapa */
@@ -16,7 +18,7 @@
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     min-height: 500px;
-    flex: 2;
+    flex: 1;
     min-width: 300px;
 }
 
@@ -33,7 +35,7 @@
 
 /* Listado de sucursales */
 .sucursales-lista {
-    flex: 1;
+    flex: 0 0 30%;
     min-width: 250px;
     max-width: 350px;
     border-radius: 6px;
@@ -223,12 +225,11 @@
     
     .sucursales-lista {
         max-width: 100%;
-        order: 1;
+        flex: 1 0 100%;
     }
     
     .sucursales-map {
         min-height: 350px;
-        order: 2;
     }
     
     .sucursales-filtro {
