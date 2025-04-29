@@ -1,14 +1,16 @@
 /**
  * Estilos para Sucursales en Google Maps (Reingeniería)
- * Version: 2.0.0
+ * Version: 2.0.3
  */
 
 /* Contenedor principal */
 .sucursales-container {
     margin-bottom: 30px;
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
+    width: 100%;
 }
 
 /* Mapa */
@@ -16,7 +18,7 @@
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     min-height: 500px;
-    flex: 2;
+    flex: 1;
     min-width: 300px;
 }
 
@@ -33,7 +35,7 @@
 
 /* Listado de sucursales */
 .sucursales-lista {
-    flex: 1;
+    flex: 0 0 30%;
     min-width: 250px;
     max-width: 350px;
     border-radius: 6px;
@@ -216,19 +218,25 @@
 }
 
 /* Estilos responsive */
+
 @media (max-width: 768px) {
+    .sucursales-lista {
+        width: 100%;
+        max-width: 100%;
+        flex: 1 0 100%;
+    }
+
     .sucursales-container {
         flex-direction: column;
     }
     
     .sucursales-lista {
         max-width: 100%;
-        order: 1;
+        flex: 1 0 100%;
     }
     
     .sucursales-map {
         min-height: 350px;
-        order: 2;
     }
     
     .sucursales-filtro {
@@ -254,4 +262,99 @@
         width: 100%;
         text-align: center;
     }
+}
+
+/* Mantener color en el botón de direcciones incluso con focus */
+.sucursal-boton-direcciones,
+.sucursal-boton-direcciones:focus {
+    background-color: #28a745;
+    color: white;
+}
+
+
+@media (max-width: 768px) {
+    .sucursales-container {
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    .sucursales-lista {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .sucursales-map {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .sucursales-filtro {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/**
+ * Correcciones CSS para el dropdown en versión móvil
+ * Agregar al archivo sucursales-maps-r.css
+ */
+
+/* Mejoras para el filtro de dropdown en móvil */
+@media (max-width: 768px) {
+    .sucursales-filtro select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px; /* Tamaño mínimo recomendado para evitar zoom en iOS */
+        height: auto;
+        background-color: white;
+        -webkit-appearance: menulist; /* Forzar estilo nativo en iOS */
+        appearance: menulist;
+        color: #333;
+    }
+    
+    .sucursales-lista-header {
+        padding: 12px 15px;
+        font-size: 15px;
+        text-align: center;
+    }
+    
+    /* Asegurar que los textos se muestren correctamente */
+    .sucursal-item h4, 
+    .sucursal-item p,
+    .sucursales-filtro,
+    .directions-link {
+        color: #333;
+        text-shadow: none;
+    }
+}
+
+/* Asegurar que el dropdown es usable en pantallas pequeñas */
+@media (max-width: 480px) {
+    .sucursales-filtro {
+        padding: 12px;
+    }
+    
+    .sucursales-filtro select {
+        padding: 12px 10px;
+        border: 1px solid #999;
+    }
+}
+
+/* Garantizar que los textos del dropdown sean visibles */
+.sucursales-filtro select,
+.sucursales-filtro select option {
+    color: #333 !important;
+    background-color: white !important;
+}
+
+/* Asegurar que el dropdown no es afectado por estilos del tema */
+#filtro-estado {
+    max-width: 100%;
+    width: 100%;
+    display: block;
+    color: #333 !important;
 }
