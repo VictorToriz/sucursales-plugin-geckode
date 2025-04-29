@@ -1,76 +1,136 @@
-# Plugin WordPress: Sucursales en Google Maps (Reingeniería)
+# 🗺️ Sucursales en Google Maps Reingeniería
 
-**Versión:** 2.0.0  
-**Autor:** Geckode/Victor Toriz
-**Licencia:** MIT
+![Version](https://img.shields.io/badge/version-2.1.0-blue.svg) ![WordPress](https://img.shields.io/badge/WordPress-5.8+-green.svg) ![PHP](https://img.shields.io/badge/PHP-7.0+-orange.svg)
 
-## 🧭 Descripción
+Plugin de WordPress para mostrar sucursales o puntos de venta en Google Maps con diversas opciones de personalización. Versión mejorada y optimizada.
 
-Este plugin permite mostrar un **mapa interactivo con sucursales** utilizando Google Maps dentro de tu sitio WordPress. Ofrece una experiencia amigable para el usuario con funcionalidades como filtros por estado, listado dinámico, y botón de "Cómo llegar" con geolocalización.
+## 👀 Vista previa
 
-## 🚀 Características
+![Sucursales en Google Maps - Vista Principal](https://github.com/VictorToriz/sucursales-plugin-geckode/blob/a3a189318820b9858a7b024b1091a36888c0604e/sucursales-maps-r/screenshots/1.png?raw=true)
 
-- Muestra sucursales con marcadores en Google Maps.
-- Vista combinada de mapa y listado lateral.
-- Filtro dinámico por estado o región.
-- Ventanas de información personalizadas.
-- Compatibilidad con la API de Google Directions.
-- Estilo moderno y diseño responsivo.
-- Panel de administración personalizado en WordPress.
+*Vista del listado de sucursales con mapa interactivo*
 
-## 📦 Archivos Principales
+## ✨ Características
 
-| Archivo | Descripción |
-|--------|-------------|
-| `sucursales-maps-r.php` | Código principal del plugin WordPress. |
-| `sucursales-maps-r.js` | Lógica de interacción con Google Maps y listado. |
-| `sucursales-maps-r.css` | Estilos front-end para mapa y listado. |
-| `admin-styles.css` | Estilos del panel de administración. |
+- 📍 Muestra múltiples ubicaciones en un mapa interactivo
+- 📱 Diseño 100% responsive para móviles, tablets y escritorio
+- 🔍 Filtrado de sucursales por estado
+- 📋 Visualización de lista de sucursales con detalles
+- 🚗 Botón "Cómo llegar" que mantiene su estilo visual
+- 🎨 Personalización de colores y estilos desde el panel de administración
+- 🚀 Compatible con WP Rocket y optimización LazyLoad
+- 🔎 Street View integrado (opcional)
 
-## 🛠️ Requisitos
+## 📸 Capturas de pantalla
 
-- WordPress 5.0 o superior
-- Una clave válida de la API de Google Maps con acceso a:
-  - Maps JavaScript API
-  - Places API
-  - Directions API
+### Vista principal con listado y mapa
+![Listado de sucursales y mapa](https://github.com/VictorToriz/sucursales-plugin-geckode/blob/a3a189318820b9858a7b024b1091a36888c0604e/sucursales-maps-r/screenshots/1.png?raw=true)
 
-## ⚙️ Instalación
+### Filtrado por estados con selector desplegable
+![Filtrado por estados](https://github.com/VictorToriz/sucursales-plugin-geckode/blob/a3a189318820b9858a7b024b1091a36888c0604e/sucursales-maps-r/screenshots/2.png?raw=true)
 
-1. Sube el contenido del plugin al directorio `/wp-content/plugins/`.
-2. Activa el plugin desde el panel de administración de WordPress.
-3. Configura tus sucursales desde el menú de administración.
-4. Inserta el mapa usando el shortcode:
+### Ventana de información al hacer clic en un marcador
+![Ventana de información](https://github.com/VictorToriz/sucursales-plugin-geckode/blob/a3a189318820b9858a7b024b1091a36888c0604e/sucursales-maps-r/screenshots/3.png?raw=true)
 
-```php
+## 📋 Requisitos
+
+- WordPress 5.8 o superior
+- PHP 7.0 o superior
+- API Key de Google Maps (con APIs: Maps JavaScript, Geocoding, Places)
+
+## 🔧 Instalación
+
+1. Sube la carpeta `sucursales-maps-r` al directorio `/wp-content/plugins/`
+2. Activa el plugin desde el panel de administración de WordPress
+3. Ve a **Sucursales > Configuración** y añade tu API Key de Google Maps
+4. Personaliza los colores según tu tema
+5. Crea las sucursales desde el menú **Sucursales > Añadir Nueva**
+
+## 📝 Uso del Shortcode
+
+Para insertar el mapa en cualquier página o entrada, utiliza el siguiente shortcode:
+
+```
 [sucursales_mapa]
 ```
 
-## 💡 Shortcode Opciones
+### Opciones disponibles:
 
-Puedes personalizar el mapa con los siguientes atributos:
+| Parámetro | Descripción | Valor predeterminado |
+|-----------|-------------|----------------------|
+| `altura`  | Altura del mapa | `500px` |
+| `ancho` | Ancho del mapa | `100%` |
+| `zoom` | Nivel de zoom inicial | `10` |
+| `id` | ID de sucursal específica | `0` (todas) |
+| `estado` | Slug del estado para filtrar | `''` (todos) |
+| `lista` | Mostrar lista de sucursales | `si` |
+| `streetview` | Habilitar Street View | `no` |
 
-```php
-[sucursales_mapa zoom="12" center_lat="19.4326" center_lng="-99.1332" mostrar_lista="true"]
+### Ejemplos:
+
+```
+[sucursales_mapa altura="600px" ancho="90%" zoom="12"]
+[sucursales_mapa id="42"]
+[sucursales_mapa estado="jalisco"]
+[sucursales_mapa lista="no"]
+[sucursales_mapa streetview="si"]
 ```
 
-| Atributo       | Descripción                          | Valor por defecto |
-|----------------|--------------------------------------|-------------------|
-| `zoom`         | Nivel de zoom del mapa               | `10`              |
-| `center_lat`   | Latitud del centro del mapa          | `0.0`             |
-| `center_lng`   | Longitud del centro del mapa         | `0.0`             |
-| `mostrar_lista`| Mostrar el listado lateral de sucursales | `true`         |
+## 🔄 Compatibilidad con WP Rocket
 
-## ✏️ Personalización
+Para evitar problemas con LazyLoad en WP Rocket:
 
-Los estilos están divididos para facilidad de edición:
-- `sucursales-maps-r.css`: interfaz pública.
-- `admin-styles.css`: panel de administración.
+1. Ve a **WP Rocket > Ajustes > Medios**
+2. En la sección **LazyLoad**, añade la clase `no-lazy` en el campo **Excluir imágenes**
+3. Guarda los cambios
 
-## 🧪 Desarrollo
+El plugin ya añade automáticamente la clase `no-lazy` a las imágenes de las sucursales.
 
-Este plugin fue desarrollado con énfasis en modularidad y buenas prácticas. El archivo JavaScript utiliza eventos delegados y se adapta dinámicamente a los datos proporcionados por la API de Google.
+## 📱 Diseño Responsive
 
-## 📄 Licencia
+El plugin está optimizado para visualización en dispositivos móviles:
 
-Este plugin está licenciado bajo la [MIT License](LICENSE).
+- Listado de sucursales ajustado al ancho de la pantalla
+- Controles adaptados para uso táctil
+- Selector de estados mejorado para dispositivos móviles
+- Botones más grandes para fácil interacción
+
+## 🎯 Mejoras en la versión 2.1.0
+
+- ✅ El listado de sucursales ocupa ancho completo en versión móvil
+- ✅ El botón "Cómo llegar" mantiene su color después de hacer clic
+- ✅ Compatibilidad con exclusión de LazyLoad para WP Rocket
+- ✅ Optimización de rendimiento y código JS/CSS
+- ✅ Corregidos problemas con selectores en la vista móvil
+
+## 🔮 Próximas funcionalidades
+
+- 📱 Aplicación móvil complementaria
+- 🌍 Soporte para múltiples idiomas
+- 📊 Estadísticas de visualización de sucursales
+- 📷 Galería de imágenes por sucursal
+
+## 🛠️ Personalización avanzada
+
+El plugin permite personalizar:
+
+- 🎨 Colores de cabecera y botones
+- 📋 Información mostrada en cada sucursal
+- 🗺️ Opciones de visualización del mapa
+- 🔍 Comportamiento del filtro de estados
+
+## 📜 Licencia
+
+Este plugin está licenciado bajo [GPLv2 o posterior](https://www.gnu.org/licenses/gpl-2.0.html).
+
+## 👨‍💻 Desarrollado por
+
+[Geckode](https://geckode.com.mx) - Especialistas en Desarrollo WordPress
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor, envía tus pull requests o reporta cualquier problema que encuentres.
+
+---
+
+¿Necesitas ayuda? [Contacta con nosotros](https://geckode.com.mx/contacto)
