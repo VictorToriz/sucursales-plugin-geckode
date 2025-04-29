@@ -1,4 +1,4 @@
-# 🗺️ Sucursales en Google Maps Reingeniería
+# 🗺️ Listado Sucursales en Google Maps filtrado por estado (México) 
 
 ![Version](https://img.shields.io/badge/version-2.1.0-blue.svg) ![WordPress](https://img.shields.io/badge/WordPress-5.8+-green.svg) ![PHP](https://img.shields.io/badge/PHP-7.0+-orange.svg)
 
